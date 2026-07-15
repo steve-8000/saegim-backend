@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pocketbase
+  labels:
+    app: pocketbase
+spec:
+  serviceName: pocketbase
+  replicas: 1 # SQLite single-writer constraint (00 §5.1) — never scale this.
+  selector:
+    matchLabels:
+      app: pocketbase
+  template:
+    metadata:
+      labels:
+        app: pocketbase
+    spec:
+      containers:
+        - name: pocketbase
+          image: ghcr.io/muchobien/pocketbase:0.23.4
+          args:
+            - --http=0.0.0.0:8090
+          ports:
+            - containerPort: 8090
+              name: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8090
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8090
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          volumeMounts:
+            - name: pb-data
+              mountPath: /pb/pb_data
+            - name: pb-migrations
+              mountPath: /pb/pb_migrations
+              readOnly: true
+      volumes:
+        - name: pb-migrations
+          configMap:
+            name: pocketbase-migrations
+  volumeClaimTemplates:
+    - metadata:
+        name: pb-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 2Gi
