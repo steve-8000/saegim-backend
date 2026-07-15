@@ -6,7 +6,6 @@ resources:
   - deploy/k8s/statefulset.yaml
   - deploy/k8s/service.yaml
   - deploy/k8s/ingress.yaml
-  - deploy/k8s/ingress-saegim-one.yaml
 
 # Migration file content changes -> ConfigMap name hash changes -> StatefulSet
 # auto-rollout, same pattern as steve-8000/test-agents.
