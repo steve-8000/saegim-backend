@@ -20,6 +20,8 @@ spec:
           image: ghcr.io/muchobien/pocketbase:0.23.4
           args:
             - --http=0.0.0.0:8090
+            - --dir=/pb/pb_data
+            - --migrationsDir=/pb/pb_migrations
           ports:
             - containerPort: 8090
               name: http
