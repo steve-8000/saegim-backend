@@ -14,3 +14,4 @@ configMapGenerator:
   - name: pocketbase-migrations
     files:
       - pb_migrations/1752624000_saegim_items.js
+      - pb_migrations/1752650000_saegim_shares.js
