@@ -15,3 +15,4 @@ configMapGenerator:
       - pb_migrations/1752624000_saegim_items.js
       - pb_migrations/1752650000_saegim_shares.js
       - pb_migrations/1752700000_saegim_shares_payload.js
+      - pb_migrations/1752700001_items_sync_ios_enums.js
